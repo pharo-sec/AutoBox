@@ -17,7 +17,7 @@ else
 	BOX = $1
 fi
 
-echo "$BLUE[+]$WHITE Creating Directory: $(tput setaf 2)$BOX"
+echo "$BLUE[+]$WHITE Creating Directory:$GREEN $BOX"
 mkdir $BOX
 
 echo "$BLUE[+]$WHITE Creating Sub-Directory:$GREEN $BOX/nmap"
