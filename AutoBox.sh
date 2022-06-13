@@ -43,8 +43,8 @@ i=1
 sp="/-\|"
 echo -n ' '
 while [ -d /proc/$PID ]; do
-  printf "\b${sp:i++%${#sp}:1}"
-  sleep 0.2
+    printf "\b${sp:i++%${#sp}:1}"
+    sleep 0.2
 done
 printf "\b$GREEN[+]$WHITE Done!\n"
 
@@ -70,7 +70,6 @@ if [ -s $BOX/nmap/open-ports.txt ]; then
                 sleep 0.2
         done
         printf "\b$GREEN[+]$WHITE Done!\n"
-        echo "$GREEN[+] Done!"
 
         echo "$BLUE[+]$WHITE Output Saved To:$GREEN $BOX/nmap/service-scan.*"
 
