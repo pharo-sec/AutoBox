@@ -1,0 +1,16 @@
+# Nmap 7.91 scan initiated Tue Jun 21 18:16:59 2022 as: nmap -p- -oA test/nmap/full-port --open -Pn -vv 127.0.0.1
+Strange read error from 127.0.0.1 (22 - 'Invalid argument')
+Nmap scan report for localhost (127.0.0.1)
+Host is up, received user-set (0.00013s latency).
+Scanned at 2022-06-21 18:16:59 CDT for 3s
+Not shown: 65530 closed ports, 1 filtered port
+Reason: 65530 conn-refused and 1 no-response
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT      STATE SERVICE REASON
+22/tcp    open  ssh     syn-ack
+6463/tcp  open  unknown syn-ack
+49450/tcp open  unknown syn-ack
+51688/tcp open  unknown syn-ack
+
+Read data files from: /usr/local/bin/../share/nmap
+# Nmap done at Tue Jun 21 18:17:02 2022 -- 1 IP address (1 host up) scanned in 2.77 seconds

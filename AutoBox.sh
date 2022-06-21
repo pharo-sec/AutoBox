@@ -37,7 +37,7 @@ read -p "$YELLOW[+]$WHITE Enter Host IP for Intial Enumeration: " IP
 
 echo "$BLUE[+]$WHITE Running Full Port Scan on $IP"
 
-nmap $IP -p- -oA $BOX/nmap/full-port --open -Pn > /dev/null &
+nmap $IP -p- -oA $BOX/nmap/full-port --open -Pn -vv > /dev/null &
 PID=$!
 i=1
 sp="/-\|"
@@ -79,6 +79,33 @@ if [ -s $BOX/nmap/open-ports.txt ]; then
 else
         echo "$RED[+]$WHITE No Ports Open...Skipping Service Scan"
 fi 
+
+SMB = $(cat $BOX/nmap/service-scan.nmap | grep microsfot-ds)
+
+if ! [ -z "$SMB" ]
+then
+    read "$YELLOW[+]$WHITE SMB Has Been Identified, Would You Like to Run SMB Enumeration?[y/n]" SMB_CON
+
+    if [ $(SMB_CON^^) -eq 'Y']
+    then
+        SMBPORT1 = $(cat $BOX/nmap/service-scan.nmap | grep microsoft-ssn | cut -d '/' -f 1)
+        SMBPORT2 = $(cat $BOX/nmap/service-scan.nmap | grep microsoft-ds | cut -d '/' -f 1)
+
+        echo "$BLUE[+]$WHITE Running SMB Nmap Scan and Enum4Linux on $IP"
+
+        nmap $IP -p $SMBPORT1,$SMBPORT2 --script=smb-vuln* -oA $BOX/nmap/smb-scan -Pn -vv > /dev/null &
+        PID1=$!
+        enum4linux -a $IP | tee -a $BOX/enumeration/enum4linux.out &
+        PID2 = $!
+        i=1
+        sp="/-\|"
+        echo -n ' '
+        while [ -d /proc/$PID1 || -d /proc/$PID2]; do
+            printf "\b${sp:i++%${#sp}:1}"
+            sleep 0.2
+        done
+        printf "\b$GREEN[+]$WHITE Done!\n"
+
 
 echo ' '
 echo $GREEN"Happy Hacking!"
