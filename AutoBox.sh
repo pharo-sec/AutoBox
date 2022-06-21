@@ -105,7 +105,8 @@ then
             sleep 0.2
         done
         printf "\b$GREEN[+]$WHITE Done!\n"
-
+    fi
+fi 
 
 echo ' '
 echo $GREEN"Happy Hacking!"
