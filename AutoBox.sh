@@ -86,10 +86,10 @@ if ! [ -z "$SMB" ]
 then
     read "$YELLOW[+]$WHITE SMB Has Been Identified, Would You Like to Run SMB Enumeration?[y/n]" SMB_CON
 
-    if [ $(SMB_CON^^) -eq 'Y']
+    if [ ${SMB_CON^^} -eq 'Y']
     then
-        SMBPORT1 = $(cat $BOX/nmap/service-scan.nmap | grep microsoft-ssn | cut -d '/' -f 1)
-        SMBPORT2 = $(cat $BOX/nmap/service-scan.nmap | grep microsoft-ds | cut -d '/' -f 1)
+        SMBPORT1=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ssn | cut -d '/' -f 1)
+        SMBPORT2=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ds | cut -d '/' -f 1)
 
         echo "$BLUE[+]$WHITE Running SMB Nmap Scan and Enum4Linux on $IP"
 
