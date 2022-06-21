@@ -80,7 +80,7 @@ else
         echo "$RED[+]$WHITE No Ports Open...Skipping Service Scan"
 fi 
 
-SMB = $(cat $BOX/nmap/service-scan.nmap | grep microsfot-ds)
+SMB=$(cat $BOX/nmap/service-scan.nmap | grep microsfot-ds)
 
 if ! [ -z "$SMB" ]
 then
@@ -96,7 +96,7 @@ then
         nmap $IP -p $SMBPORT1,$SMBPORT2 --script=smb-vuln* -oA $BOX/nmap/smb-scan -Pn -vv > /dev/null &
         PID1=$!
         enum4linux -a $IP | tee -a $BOX/enumeration/enum4linux.out &
-        PID2 = $!
+        PID2=$!
         i=1
         sp="/-\|"
         echo -n ' '
