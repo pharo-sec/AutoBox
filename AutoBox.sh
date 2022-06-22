@@ -99,7 +99,7 @@ if [ -z "$SMB" ]; then
         i=1
         sp="/-\|"
         echo -n ' '
-        while [ -d /proc/$PID1 || -d /proc/$PID2 ]; do
+        while [ -d /proc/$PID1 ] || [ -d /proc/$PID2 ]; do
             printf "\b${sp:i++%${#sp}:1}"
             sleep 0.2
         done
