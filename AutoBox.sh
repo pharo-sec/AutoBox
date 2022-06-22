@@ -76,18 +76,17 @@ if [ -s $BOX/nmap/open-ports.txt ]; then
         echo ""
         echo "$GREEN[+]$WHITE Services/Versions Identified:"
         echo "$WHITE$(cat $BOX/nmap/service-scan.nmap | grep tcp)"
+        echo ' '
 else
         echo "$RED[+]$WHITE No Ports Open...Skipping Service Scan"
 fi 
 
 SMB=$(cat $BOX/nmap/service-scan.nmap | grep microsfot-ds)
 
-if ! [ -z "$SMB" ]
-then
-    read "$YELLOW[+]$WHITE SMB Has Been Identified, Would You Like to Run SMB Enumeration?[y/n]" SMB_CON
+if [ -z "$SMB" ]; then
+    read -p "$YELLOW[+]$WHITE SMB Has Been Identified, Would You Like to Run SMB Enumeration?[y/n]" SMB_CON
 
-    if [ ${SMB_CON^^} -eq 'Y']
-    then
+    if [ ${SMB_CON^^} = 'Y' ]; then
         SMBPORT1=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ssn | cut -d '/' -f 1)
         SMBPORT2=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ds | cut -d '/' -f 1)
 
@@ -100,7 +99,7 @@ then
         i=1
         sp="/-\|"
         echo -n ' '
-        while [ -d /proc/$PID1 || -d /proc/$PID2]; do
+        while [ -d /proc/$PID1 || -d /proc/$PID2 ]; do
             printf "\b${sp:i++%${#sp}:1}"
             sleep 0.2
         done
