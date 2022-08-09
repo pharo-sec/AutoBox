@@ -1,3 +1,0 @@
-<nmaprun><runstats><finished time="1655853419" timestr="Tue Jun 21 18:16:59 2022" summary="Nmap done at Tue Jun 21 18:16:59 2022; 0 IP addresses (0 hosts up) scanned in 0.03 seconds" elapsed="0.03" exit="error" errormsg="Error #486: Your port specifications are illegal.  Example of proper form: &quot;-100,200-1024,T:3000-4000,U:60000-&quot;"/><hosts up="0" down="0" total="0"/>
-</runstats>
-</nmaprun>
