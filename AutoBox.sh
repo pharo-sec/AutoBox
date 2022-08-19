@@ -76,36 +76,55 @@ if [ -s $BOX/nmap/open-ports.txt ]; then
         echo ""
         echo "$GREEN[+]$WHITE Services/Versions Identified:"
         echo "$WHITE$(cat $BOX/nmap/service-scan.nmap | grep tcp)"
-        echo ' '
 else
         echo "$RED[+]$WHITE No Ports Open...Skipping Service Scan"
 fi 
 
-SMB=$(cat $BOX/nmap/service-scan.nmap | grep microsfot-ds)
+cp -r ~/md-templates ./$BOX-md
+mv ./$BOX-md/"05 - Enumeration.md" ./$BOX-md/"05 - $BOX Enumeration.md"
+##### Creating Overview File #####
 
-if [ -z "$SMB" ]; then
-    read -p "$YELLOW[+]$WHITE SMB Has Been Identified, Would You Like to Run SMB Enumeration?[y/n]" SMB_CON
+sed -i "s/BOX-NAME/$BOX/g" ./$BOX-md/"00 - Overview.md"
+sed -i "s/BOX-IP/$IP/g" ./$BOX-md/"00 - Overview.md"
 
-    if [ ${SMB_CON^^} = 'Y' ]; then
-        SMBPORT1=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ssn | cut -d '/' -f 1)
-        SMBPORT2=$(cat $BOX/nmap/service-scan.nmap | grep microsoft-ds | cut -d '/' -f 1)
+##### Creating the Enumeration File #####
+echo "# $BOX Enumeration" > ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
 
-        echo "$BLUE[+]$WHITE Running SMB Nmap Scan and Enum4Linux on $IP"
+echo "## Full Port Scan" >> ~/$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
 
-        nmap $IP -p $SMBPORT1,$SMBPORT2 --script=smb-vuln* -oA $BOX/nmap/smb-scan -Pn -vv > /dev/null &
-        PID1=$!
-        enum4linux -a $IP | tee -a $BOX/enumeration/enum4linux.out &
-        PID2=$!
-        i=1
-        sp="/-\|"
-        echo -n ' '
-        while [ -d /proc/$PID1 ] || [ -d /proc/$PID2 ]; do
-            printf "\b${sp:i++%${#sp}:1}"
-            sleep 0.2
-        done
-        printf "\b$GREEN[+]$WHITE Done!\n"
-    fi
-fi 
+echo '```bash' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo "nmap ${IP} -p- -oA $BOX/nmap/full-port --open -Pn -vv" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '```' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
 
-echo ' '
+echo "Which Resulted In:" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+echo "|PORT|SERVICE|" >> ./$BOX-md/"05 - $BOX Enumeration.md" 
+echo "|----|-------|" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+cat $BOX/nmap/full-port.nmap | grep /tcp | awk '{print $1,$3}' | sed 's/\/tcp /|/g' | sed 's/^/|/' | sed 's/$/|/g' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+echo "## Service Scan" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+echo '```bash' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo "nmap $IP -p $ports -sC -sV -oA $BOX/nmap/service-scan -Pn" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '```' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+echo "Which Resulting In:" >> ./$BOX-md/"05 - $BOX Enumeration.md"
+echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+echo "|PORT|SERVICE|VERSION|" >> ./$BOX-md/"05 - $BOX Enumeration.md" 
+echo "|----|-------|-------|">> ./$BOX-md/"05 - $BOX Enumeration.md"
+cat $BOX/nmap/service-scan.nmap | grep /tcp | awk '{$2=$4=""; print}' | sed 's/\/tcp  /|/g' | sed 's/^/|/' | sed 's/$/|/g' | sed -e 's/\s\+/|/' >> ./$BOX-md/"05 - $BOX Enumeration.md"
+
+##### Transferring Files to Windows #####
+echo "$GREEN[+]$WHITE Run the Following Command to Copy Files to Your Machine:" 
+echo "scp -r ~/$BOX-md/ user@host:'\"Path\\to\\tagert\\files\"'"
+
+echo ''
 echo $GREEN"Happy Hacking!"
