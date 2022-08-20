@@ -91,7 +91,7 @@ sed -i "s/BOX-IP/$IP/g" ./$BOX-md/"00 - Overview.md"
 echo "# $BOX Enumeration" > ./$BOX-md/"05 - $BOX Enumeration.md"
 echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
 
-echo "## Full Port Scan" >> ~/$BOX-md/"05 - $BOX Enumeration.md"
+echo "## Full Port Scan" >> ./$BOX-md/"05 - $BOX Enumeration.md"
 echo '' >> ./$BOX-md/"05 - $BOX Enumeration.md"
 
 echo '```bash' >> ./$BOX-md/"05 - $BOX Enumeration.md"
