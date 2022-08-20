@@ -124,7 +124,7 @@ cat $BOX/nmap/service-scan.nmap | grep /tcp | awk '{$2=$4=""; print}' | sed 's/\
 
 ##### Transferring Files to Windows #####
 echo "$GREEN[+]$WHITE Run the Following Command to Copy Files to Your Machine:" 
-echo "scp -r ~/$BOX-md/ user@host:'\"Path\\to\\tagert\\files\"'"
+echo "scp -r ./$BOX-md/ user@host:'\"Path\\to\\tagert\\files\"'"
 
 echo ''
 echo $GREEN"Happy Hacking!"
